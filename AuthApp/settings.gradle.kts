@@ -23,3 +23,4 @@ rootProject.name = "AuthApp"
 include(":app")
 include(":data")
 include(":domain")
+include(":feature")
