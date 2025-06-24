@@ -56,7 +56,7 @@ fun LoginUI(){
                      leadingIcon = Icons.Default.Email
               )
 
-              Spacer(modifier = Modifier.height(16.dp))
+              Spacer(modifier = Modifier.height(17.dp))
 
               CustomTextField(
                      value = password.value,
