@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.hilt.plugin)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -31,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -41,14 +47,27 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.firebase.auth)
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("com.google.firebase:firebase-auth:23.2.1")
-    implementation ("androidx.credentials:credentials:1.5.0")
-    implementation ("androidx.credentials:credentials-play-services-auth:1.5.0")
-    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    // Retrofit and OkHttp
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit.converter)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // Gson
+    implementation(libs.gson)
+
+    // Hilt DI and Navigation
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Location
+    implementation(libs.play.services.location)
+
 }

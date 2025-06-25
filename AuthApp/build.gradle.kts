@@ -2,18 +2,24 @@
 
 
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
     dependencies {
-        classpath("com.google.gms:google-services:4.4.2")
+
+        classpath(libs.hilt.android.gradle.plugin)
+
     }
 }
-
-
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.android.library) apply false
-
-    id("com.google.dagger.hilt.android") version "2.50" apply false
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.hilt.plugin) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.google.gms.google.services) apply false
+    alias(libs.plugins.google.firebase.crashlytics) apply false
+    alias(libs.plugins.google.firebase.firebase.perf) apply false
 }

@@ -34,16 +34,29 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation ("com.google.firebase:firebase-auth:23.2.1")
-    implementation ("androidx.credentials:credentials:1.5.0")
-    implementation ("androidx.credentials:credentials-play-services-auth:1.5.0")
-    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+        implementation(libs.androidx.core.ktx)
+        implementation(libs.androidx.appcompat)
+        implementation(libs.material)
+        implementation(libs.firebase.auth)
+        implementation(libs.firebase.firestore)
+        implementation(libs.firebase.storage)
+        testImplementation(libs.junit)
+        androidTestImplementation(libs.androidx.junit)
+        androidTestImplementation(libs.androidx.espresso.core)
+
+        // Retrofit and OkHttp
+        implementation (libs.retrofit)
+        implementation (libs.okhttp)
+        implementation (libs.retrofit.converter)
+        implementation(libs.okhttp.logging.interceptor)
+
+        // Gson
+        implementation (libs.gson)
+
+        // Hilt DI and Navigation
+        implementation(libs.hilt.android)
+
+
 
 }
