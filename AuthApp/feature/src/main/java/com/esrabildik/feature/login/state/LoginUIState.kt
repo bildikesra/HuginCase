@@ -1,4 +1,4 @@
-package com.esrabildik.feature.state
+package com.esrabildik.feature.login.state
 
 import com.esrabildik.domain.model.UserResponse
 import com.google.firebase.auth.FirebaseUser
