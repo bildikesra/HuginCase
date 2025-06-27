@@ -39,7 +39,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     }.flowOn(Dispatchers.IO)
         .catch { e ->
-            emit(RootResult.Error(UNKNOWN_ERROR_MESSAGE))
+            emit(RootResult.Error(e.localizedMessage.toString()))
         }
 
     override fun signUpWithEmailAndPassword(request: UserRequest): Flow<RootResult<UserResponse>> =
@@ -48,14 +48,17 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
             val result =
                 firebaseAuth.createUserWithEmailAndPassword(request.email, request.password).await()
-            val firebaseuser = result.user
+            val firebaseUser = result.user
 
-            if (firebaseuser != null) {
-                val userResponse = firebaseuser.toDomainUserResponse()
-                emit(RootResult.Success(userResponse))
-            } else {
+            try {
+                if (firebaseUser != null) {
+                    val userResponse = firebaseUser.toDomainUserResponse()
+                    emit(RootResult.Success(userResponse))
+                }
+            } catch (e: Exception) {
                 emit(RootResult.Error(UNKNOWN_ERROR_MESSAGE))
-            }
+        }
 
-        }.flowOn(Dispatchers.IO)
+
+}.flowOn(Dispatchers.IO)
 }
