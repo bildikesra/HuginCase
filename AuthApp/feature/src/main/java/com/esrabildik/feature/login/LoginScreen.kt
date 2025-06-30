@@ -3,6 +3,7 @@ package com.esrabildik.feature.login
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,13 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +56,7 @@ import com.esrabildik.feature.navigation.NavGraph
 @Composable
 fun LoginUI(
     viewModel: LoginViewModel = hiltViewModel(),
-    navController: NavController
+    navigateToRegistry: () -> Unit = {},
 ) {
 
     val signInState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,36 +79,47 @@ fun LoginUI(
             LoadingLottie(resId = R.raw.loading_anim)
         }
     } else {
-        Column(
+
+        Card(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(10.dp),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(Color.White)
         ) {
-            LoginEmailInput(
-                email = email,
-                onEmailChange = { viewModel.onEvent(LoginEvent.UpdateEmail(it)) }
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LoginEmailInput(
+                    email = email,
+                    onEmailChange = { viewModel.onEvent(LoginEvent.UpdateEmail(it)) }
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            LoginPasswordInput(
-                password = password,
-                onPasswordChange = { viewModel.onEvent(LoginEvent.UpdatePassword(it)) },
-                onLoginClick = {
-                    viewModel.onEvent(LoginEvent.SignIn(UserRequest(email, password)))
-                }
-            )
+                LoginPasswordInput(
+                    password = password,
+                    onPasswordChange = { viewModel.onEvent(LoginEvent.UpdatePassword(it)) },
+                    onLoginClick = {
+                        viewModel.onEvent(LoginEvent.SignIn(UserRequest(email, password)))
+                    }
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(6.dp))
+                Divider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp, color = Color.LightGray)
 
-            CustomButton(
-                text = "SIGN UP",
-                onClick = { navController.navigate(NavGraph.RegisterScreen.route)}
-                // navhost işlemi
-            )
+                CustomButton(
+                    text = "SIGN UP",
+                    onClick = { navigateToRegistry.invoke() }
+                    // navhost işlemi
+                )
 
+            }
         }
     }
 }
@@ -112,21 +130,33 @@ fun LoginEmailInput(
     email: String,
     onEmailChange: (String) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
         Text(
             text = "Login",
             fontSize = 32.sp,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
         )
 
-        CustomTextField(
-            value = email,
-            onValueChange = onEmailChange,
-            label = "Email Address",
-            placeholder = "Enter your Email",
-            leadingIcon = Icons.Default.Email
+        Text(
+            text = "Sign in to continue",
+            fontSize = 22.sp,
+            modifier = Modifier.padding(bottom = 20.dp)
         )
     }
+
+
+
+    CustomTextField(
+        value = email,
+        onValueChange = onEmailChange,
+        label = "Email Address",
+        placeholder = "Enter your Email",
+        leadingIcon = Icons.Default.Email
+    )
 }
 
 
@@ -147,8 +177,9 @@ fun LoginPasswordInput(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         CustomButton(
-            text = "Log In",
+            text = "SIGN IN",
             onClick = onLoginClick
         )
     }
@@ -170,12 +201,12 @@ fun CustomButton(
             modifier = Modifier.padding(16.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                contentColor = Color.DarkGray,
-                containerColor = Color.White
+                contentColor = Color.White,
+                containerColor = Color.LightGray
             ),
             elevation = ButtonDefaults.buttonElevation(10.dp),
             contentPadding = PaddingValues(
-                horizontal = 20.dp,
+                horizontal = 50.dp,
                 vertical = 12.dp
             )
         ) {
@@ -217,8 +248,8 @@ fun LoginPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(14.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         LoginEmailInput(
             email = "test@example.com",
