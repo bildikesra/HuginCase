@@ -42,7 +42,7 @@ import com.esrabildik.feature.register.viewmodel.RegisterViewModel
 @Composable
 fun RegisterUI(
     registerViewModel : RegisterViewModel = hiltViewModel(),
-    navigationToLogin : () -> Unit = {}
+    navigationToLogin : () -> Unit = {},
 ){
     val signUpState by registerViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -54,6 +54,9 @@ fun RegisterUI(
     LaunchedEffect(signUpState.error){
         signUpState.error?.let { error ->
             Toast.makeText(context,error, Toast.LENGTH_SHORT).show()
+        }
+        signUpState.user?.let {
+            navigationToLogin.invoke()
         }
     }
 
@@ -129,7 +132,7 @@ fun RegisterPasswordInput(
         Spacer(modifier = Modifier.height(16.dp))
 
         CustomButton(
-            text = "Log In",
+            text = "Register",
             onClick = onRegisterClick
         )
     }
