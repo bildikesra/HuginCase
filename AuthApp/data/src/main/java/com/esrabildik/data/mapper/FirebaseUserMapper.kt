@@ -13,7 +13,6 @@ fun FirebaseUser.toDomainUserRequest() : UserRequest {
 
 fun FirebaseUser.toDomainUserResponse() : UserResponse {
     return UserResponse(
-        email = this.email ?: "",
-        phoneNumber = this.phoneNumber ?: "",
-        displayName = this.displayName ?: "")
+        userId = this.uid,
+        email = this.email ?: "")
 }
