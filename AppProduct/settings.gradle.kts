@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AppProduct"
 include(":app")
- 
+include(":data")
