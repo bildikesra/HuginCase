@@ -1,31 +1,33 @@
 package com.esrabildik.authapp
 
 
+import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ShareCompat.IntentBuilder
 import com.esrabildik.authapp.ui.theme.AuthAppTheme
-import com.esrabildik.authapp.utils.BROADCAST_ACTION
+import com.esrabildik.authapp.utils.INTENT_ACTION
 import com.esrabildik.authapp.utils.SERVICE_START_ACTION
 import com.esrabildik.data.broadcast.LoginResultReceiver
 import com.esrabildik.feature.main.Main
 import com.esrabildik.feature.util.LOGIN_SAVE_RESULT
 import dagger.hilt.android.AndroidEntryPoint
 
+val package_name = "com.esrabildik.productapp"
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var loginResultReceiver: LoginResultReceiver
-
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -49,10 +51,9 @@ class MainActivity : ComponentActivity() {
         // TODO: Broadcast al true ise diğer appe geç
         setContent {
             Main(
-                startService = {
-                    user ->
-                    try{
-                        Log.d("startService","Service")
+                startService = { user ->
+                    try {
+                        Log.d("startService", "Service")
                         serviceIntent.apply {
                             `package` = "com.esrabildik.huginservice"
                             putExtra("user_email", user.email)
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         startForegroundService(serviceIntent)
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         e.localizedMessage?.let { Log.e("ServiceException", it) }
                     }
 
@@ -72,11 +73,18 @@ class MainActivity : ComponentActivity() {
         }
 
         loginResultReceiver = LoginResultReceiver { success ->
-            Log.d("isSucces","$success")
+            Log.d("isSucces", "$success")
             if (success) {
                 // TODO: ikinci app'e geçiş işlemi buraya yazılır
-                // com.esrabildik.productapp
                 Log.d("LoginReceiver", "Login başarılı, diğer uygulamaya geçiliyor")
+
+                val startProductAppIntent = Intent().apply {
+                    component =
+                        ComponentName(package_name, "com.esrabildik.productapp.MainActivity")
+                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+                }
+                startActivity(startProductAppIntent)
 
                 finish()
             } else {
@@ -84,8 +92,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val filter = IntentFilter(BROADCAST_ACTION)
-        registerReceiver(loginResultReceiver,filter, RECEIVER_EXPORTED)
+        val filter = IntentFilter(INTENT_ACTION)
+        registerReceiver(loginResultReceiver, filter, RECEIVER_EXPORTED)
 
     }
 
@@ -95,7 +103,6 @@ class MainActivity : ComponentActivity() {
         unregisterReceiver(loginResultReceiver)
     }
 }
-
 
 
 @Preview(showBackground = true)
