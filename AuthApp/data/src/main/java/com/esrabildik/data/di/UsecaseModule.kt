@@ -1,6 +1,7 @@
 package com.esrabildik.data.di
 
 import com.esrabildik.domain.repository.auth.AuthRepository
+import com.esrabildik.domain.usecase.auth.LoginUseCase
 import com.esrabildik.domain.usecase.auth.SignInUseCase
 import com.esrabildik.domain.usecase.auth.SignUpUsecase
 import dagger.Binds
@@ -22,6 +23,11 @@ object UsecaseModule {
     @Provides
     fun providesSignUpUseCase(repository: AuthRepository) : SignUpUsecase {
         return SignUpUsecase(repository)
+    }
+
+    @Provides
+    fun providesLoginUseCase(repository: AuthRepository) : LoginUseCase {
+        return LoginUseCase(repository)
     }
 
 }
