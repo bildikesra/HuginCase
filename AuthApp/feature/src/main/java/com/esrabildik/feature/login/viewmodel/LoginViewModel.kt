@@ -1,5 +1,6 @@
 package com.esrabildik.feature.login.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,7 +34,6 @@ class LoginViewModel @Inject constructor(
         when(event){
             is LoginEvent.SignIn -> {
                 signIn(event.request)
-
             }
 
             is LoginEvent.UpdatePassword -> {
@@ -58,17 +58,21 @@ class LoginViewModel @Inject constructor(
     private fun signIn(request: UserRequest) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
+
             signInUseCase(request).collect { result ->
                 when (result) {
                     is RootResult.Success -> {
+                        Log.d("LoginViewModel","Login SUCCESS -> email : ${result.data.email}")
                         _uiState.value = LoginUIState(user = result.data)
                     }
 
                     is RootResult.Error -> {
+                        Log.e("LoginViewModel","Login FAILED -> message: ${result.message}")
                         _uiState.value = LoginUIState(error = result.message)
                     }
 
                     is RootResult.Loading -> {
+                        Log.d("LoginViewModel","Login Loading..")
                         _uiState.value = LoginUIState(isLoading = true)
 
                     }

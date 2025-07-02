@@ -8,11 +8,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.esrabildik.domain.model.UserResponse
 import com.esrabildik.feature.login.LoginUI
 import com.esrabildik.feature.register.RegisterUI
 
 @Composable
-fun AppNavHost(navController: NavHostController) {
+fun AppNavHost(navController: NavHostController,startService : (user : UserResponse) -> Unit) {
     Surface(color = MaterialTheme.colorScheme.background) {
 
         NavHost(
@@ -22,6 +23,7 @@ fun AppNavHost(navController: NavHostController) {
             composable(route = NavGraph.LoginScreen.route) {
                 LoginUI(
                     navigateToRegistry = { navController.navigate(NavGraph.RegisterScreen.route) },
+                    startService = startService
                 )
             }
 

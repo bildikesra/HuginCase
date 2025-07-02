@@ -15,20 +15,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Text
+import com.esrabildik.domain.model.UserResponse
 import com.esrabildik.feature.navigation.AppNavHost
 
 
 @Composable
 fun Main(
+    startService : (user :  UserResponse) -> Unit
 ) {
+
     val navController = rememberNavController()
     val destination = navController.currentDestination
+
     Scaffold(
         topBar = {
             CustomTopBar(
@@ -40,7 +45,7 @@ fun Main(
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            AppNavHost(navController)
+            AppNavHost(navController, startService)
         }
     }
 }
