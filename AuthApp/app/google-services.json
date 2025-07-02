@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "390150649974",
+    "project_id": "huginauthentication-bbd58",
+    "storage_bucket": "huginauthentication-bbd58.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390150649974:android:9237ccfe7a2e4ed97b0757",
+        "android_client_info": {
+          "package_name": "com.esrabildik.authapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcu2TRFb_ZWHEZZKTjekmyPc6YuVW76hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
