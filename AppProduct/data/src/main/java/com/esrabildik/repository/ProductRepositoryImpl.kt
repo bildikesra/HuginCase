@@ -1,11 +1,10 @@
 package com.esrabildik.repository
 
-import android.view.KeyEvent.DispatcherState
 import com.esrabildik.domain.model.Product
 import com.esrabildik.domain.repository.ProductRepository
 import com.esrabildik.domain.util.APIResult
+import com.esrabildik.data.remote.ProductApi
 import com.esrabildik.mapper.toDomain
-import com.esrabildik.remote.ProductApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,7 +17,7 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
     override fun getProducts(): Flow<APIResult<List<Product>>> =
 
-        flow{
+        flow {
             emit(APIResult.Loading)
             val products = api.getProductList().products
 
@@ -30,7 +29,7 @@ class ProductRepositoryImpl(
                 emit(APIResult.Error(err.message.toString()))
             }
 
-    override suspend fun getCategories(): Flow<APIResult<List<String>>> =
+    override fun getCategories(): Flow<APIResult<List<String>>> =
         flow {
             emit(APIResult.Loading)
             val categories = api.getCategoryList()
@@ -40,6 +39,32 @@ class ProductRepositoryImpl(
             .catch { error ->
                 emit(APIResult.Error(error.message.toString()))
             }
+
+    override fun getProductById(id: String): Flow<APIResult<Product>> =
+        flow {
+            emit(APIResult.Loading)
+            val product = api.getProductById(id)
+            emit(APIResult.Success(product))
+        }.flowOn(Dispatchers.IO)
+            .catch { error ->
+                emit(APIResult.Error(error.message.toString()))
+            }
+
+    override fun getCategoryName(categoryName: String): Flow<APIResult<List<Product>>> = flow {
+        emit(APIResult.Loading)
+
+        val response = api.getProductByCategory(categoryName)
+
+        // Mapping
+        val mappedProducts = response.products.map { it.toDomain() }
+
+        emit(APIResult.Success(mappedProducts))
+    }.flowOn(Dispatchers.IO).catch { error ->
+        emit(APIResult.Error(error.message ?: "Unknown error"))
     }
+
+
+}
+
 
 

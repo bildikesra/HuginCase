@@ -1,9 +1,11 @@
 package com.esrabildik.di.RetrofitModule
 
 import com.esrabildik.domain.repository.ProductRepository
+import com.esrabildik.domain.usecase.GetProductByIdUseCase
+import com.esrabildik.domain.usecase.GetProductCategoryName
 import com.esrabildik.domain.usecase.GetProductUseCase
 import com.esrabildik.domain.util.BASE_URL
-import com.esrabildik.remote.ProductApi
+import com.esrabildik.data.remote.ProductApi
 import com.esrabildik.repository.ProductRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -34,5 +36,15 @@ object RetrofitModule {
     @Provides
     fun provideGetProductsUseCase(repository: ProductRepository) : GetProductUseCase {
         return GetProductUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetProductByIdUseCase(repository: ProductRepository) : GetProductByIdUseCase {
+        return GetProductByIdUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetProductByName(repository: ProductRepository) : GetProductCategoryName {
+        return GetProductCategoryName(repository)
     }
 }

@@ -1,10 +1,12 @@
-package com.esrabildik.appproduct.ui.theme
+package com.esrabildik.feature.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.esrabildik.feature.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -31,4 +33,21 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val fontFamily = FontFamily(
+    Font(R.font.sans_medium,FontWeight.Medium),
+    Font(R.font.sans_regular,FontWeight.Normal),
+    Font(R.font.sans_semibold,FontWeight.Bold)
+
+)
+
+val myTypography = Typography(
+    titleLarge = TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    )
 )

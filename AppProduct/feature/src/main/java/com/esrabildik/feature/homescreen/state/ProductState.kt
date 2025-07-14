@@ -1,4 +1,4 @@
-package com.esrabildik.feature.state
+package com.esrabildik.feature.homescreen.state
 
 import com.esrabildik.domain.model.Product
 

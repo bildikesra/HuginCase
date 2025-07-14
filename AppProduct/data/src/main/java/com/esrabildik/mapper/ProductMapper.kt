@@ -19,3 +19,4 @@ fun ProductDTO.toDomain() : Product {
         category = category
     )
 }
+
